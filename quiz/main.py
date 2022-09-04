@@ -2,7 +2,8 @@ from quiz_brain import QuizBrain
 from quiz_bank import QuizBank
 from quiz_categories import QuizCategories
 
-if __name__ == "__main__"":
+
+if __name__ == "__main__":
     my_quiz_category = QuizCategories()
     my_quiz_category.list_categories()
     my_category = int(input("Enter an ID from the list above.\n"))

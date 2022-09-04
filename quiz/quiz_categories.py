@@ -1,7 +1,5 @@
-from question_model import Question
 import html
 import requests
-import json
 
 
 class QuizCategories:
@@ -12,7 +10,7 @@ class QuizCategories:
 
     def _get_categories(self) -> dict[int, str]:
         response = requests.get(self.url_categories)
-        results_to_json = json.loads(response.text)
+        results_to_json = response.json()
         category_list = html.unescape(results_to_json["trivia_categories"])
         category_dict_temp: dict[int, str] = {}
         for category_dict in category_list:
