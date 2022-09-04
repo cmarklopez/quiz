@@ -1,33 +1,19 @@
-from question_model import Question
 from quiz_brain import QuizBrain
-import html
-import requests
-import json
+from quiz_bank import QuizBank
+from quiz_categories import QuizCategories
 
-url = "https://opentdb.com/api.php"
+if __name__ == "__main__"":
+    my_quiz_category = QuizCategories()
+    my_quiz_category.list_categories()
+    my_category = int(input("Enter an ID from the list above.\n"))
+    number_of_questions = int(input("Choose a number of questions from 1 to 20.\n"))
 
-params = {
-    "amount": 10,
-    "category": 11,
-    "type": "boolean",
-}
+    my_quiz_bank = QuizBank(my_category, number_of_questions)
 
-response = requests.get(url, params)
-results_to_json = json.loads(response.text)
-question_data = results_to_json["results"]
+    quiz = QuizBrain(my_quiz_bank.questions)
 
-question_bank = []
+    while quiz.still_has_questions():
+        quiz.next_question()
 
-for question_dict in question_data:
-    question_text = html.unescape(question_dict["question"])
-    question_answer = question_dict["correct_answer"]
-    question = Question(question_text, question_answer)
-    question_bank.append(question)
-
-quiz = QuizBrain(question_bank)
-
-while quiz.still_has_questions():
-    quiz.next_question()
-
-print("You have completed the quiz.")
-print(f"your final score is {quiz.score}/{quiz.question_number}")
+    print("You have completed the quiz.")
+    print(f"your final score is {quiz.score}/{quiz.question_number}")
