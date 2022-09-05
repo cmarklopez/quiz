@@ -20,9 +20,13 @@ class QuizBank:
         params["type"] = self.question_type
         response = requests.get(self.url_questions, params)
         results_to_json = response.json()
-        raw_questions = results_to_json["results"]
-        question_bank = self._process_questions(raw_questions)
-        return question_bank
+        result_code = results_to_json["response_code"]
+        if result_code == 0:
+            raw_questions = results_to_json["results"]
+            question_bank = self._process_questions(raw_questions)
+            return question_bank
+        else:
+            return []
 
     def _process_questions(
         self, questions_to_parse: list[dict[str, str]]
