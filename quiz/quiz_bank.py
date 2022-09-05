@@ -24,11 +24,13 @@ class QuizBank:
         question_bank = self._process_questions(raw_questions)
         return question_bank
 
-    def _process_questions(self, questions_to_parse: dict[str, str]) -> list[Question]:
+    def _process_questions(
+        self, questions_to_parse: list[dict[str, str]]
+    ) -> list[Question]:
         question_bank: list[Question] = []
         for question_dict in questions_to_parse:
-            question_text: str = html.unescape(question_dict["question"])
-            question_answer: str = question_dict["correct_answer"]
+            question_text = html.unescape(question_dict["question"])
+            question_answer = question_dict["correct_answer"]
             question = Question(question_text, question_answer)
             question_bank.append(question)
         return question_bank
