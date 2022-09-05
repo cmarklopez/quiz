@@ -3,6 +3,9 @@ from quiz_bank import QuizBank
 from quiz_categories import QuizCategories
 
 
+MAX_NUMBER_QUESTIONS = 20
+
+
 def enter_category() -> int:
     while True:
         user_input = input("Enter an ID from the list above.\n")
@@ -22,7 +25,12 @@ def enter_number() -> int:
             break
         except ValueError:
             continue
-    return user_input
+    if user_input < 1:
+        return 1
+    elif user_input > MAX_NUMBER_QUESTIONS:
+        return MAX_NUMBER_QUESTIONS
+    else:
+        return user_input
 
 
 def main():
