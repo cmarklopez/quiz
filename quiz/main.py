@@ -51,7 +51,7 @@ def max_questions_category(category_id: int) -> int:
 
 def main():
     my_quiz_category = QuizCategories()
-    my_quiz_category.list_categories()
+    print(my_quiz_category)
     my_category = enter_category(my_quiz_category)
     avalable_question_count = max_questions_category(my_category)
     number_of_questions = enter_number(avalable_question_count)

@@ -8,6 +8,12 @@ class QuizCategories:
     def __init__(self) -> None:
         self.categories = self._get_categories()
 
+    def __str__(self) -> str:
+        category_list = ""
+        for id, category in self.categories.items():
+            category_list += f"{id}: {category}\n"
+        return category_list
+
     def _get_categories(self) -> dict[int, str]:
         response = requests.get(self.url_categories)
         results_to_json = response.json()
@@ -18,7 +24,3 @@ class QuizCategories:
             category_name = category_dict["name"]
             category_dict_temp[category_id] = category_name
         return category_dict_temp
-
-    def list_categories(self) -> None:
-        for id, name in self.categories.items():
-            print(f"ID: {id}, Name: {name}")
