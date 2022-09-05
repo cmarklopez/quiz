@@ -3,6 +3,10 @@ import requests
 
 
 class QuizCategories:
+    """This class obtains a list of all question categories from the Open Trivia DB,
+    and stores and manages them
+    """
+
     url_categories = "https://opentdb.com/api_category.php"
     url_max_questions = "https://opentdb.com/api_count.php"
 
@@ -16,6 +20,7 @@ class QuizCategories:
         return category_list
 
     def _get_categories(self) -> dict[int, str]:
+        """Get a list of all categories from the API"""
         response = requests.get(self.url_categories)
         results_to_json = response.json()
         category_list = html.unescape(results_to_json["trivia_categories"])
@@ -27,6 +32,10 @@ class QuizCategories:
         return category_dict_temp
 
     def max_questions_category(self, category_id: int) -> int:
+        """Get the total number of questions for the chosen category from the API
+
+        :param category_id: int, The category chosen by the player for the game.
+        """
         params = {"category": category_id}
         response = requests.get(self.url_max_questions, params)
         max_questions_dict = response.json()

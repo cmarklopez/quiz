@@ -4,6 +4,8 @@ import requests
 
 
 class QuizBank:
+    """This class gets and stored the questions for a quiz from the Open Trivia DB"""
+
     url_questions = "https://opentdb.com/api.php"
     question_type = "boolean"
 
@@ -14,6 +16,9 @@ class QuizBank:
         self.question_type = "boolean"
 
     def _get_questions(self) -> list[Question]:
+        """Get the questions from the Open Trivia DB and store them in questions
+        attribute
+        """
         params = {}
         params["amount"] = self.number_of_questions
         params["category"] = self.question_category
@@ -31,6 +36,9 @@ class QuizBank:
     def _process_questions(
         self, questions_to_parse: list[dict[str, str]]
     ) -> list[Question]:
+        """Format the questions returned from the API. Strip the extra dictionary
+        and fix the encoding.
+        """
         question_bank: list[Question] = []
         for question_dict in questions_to_parse:
             question_text = html.unescape(question_dict["question"])

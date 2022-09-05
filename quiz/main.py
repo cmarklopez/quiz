@@ -7,6 +7,14 @@ MAX_NUMBER_QUESTIONS = 20
 
 
 def enter_category(quiz_category: QuizCategories) -> int:
+    """
+    Prompt the player to input the ID of the category of questions to use for the game.
+
+    :param quiz_category: QuizCategory, the object used to pull the categories from
+        the Open Trivia DB API and store them.
+
+    :return: The ID of the queestion category chosen by the player.
+    """
     while True:
         user_input = input("Enter an ID from the list above.\n")
         try:
@@ -22,6 +30,14 @@ def enter_category(quiz_category: QuizCategories) -> int:
 
 
 def enter_number(max_questions: int) -> int:
+    """
+    Prompt the player to input the number of questions to use for the game.
+
+    :param max_questions: int, the total number of questions in the Open Trivia DB
+        that match the criteria for the current game
+
+    :return: The number of questions for the game as chosen by the player.
+    """
     number_of_questions = min(max_questions, MAX_NUMBER_QUESTIONS)
     while True:
         user_input = input(
