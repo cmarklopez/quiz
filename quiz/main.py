@@ -1,7 +1,6 @@
 from quiz_brain import QuizBrain
 from quiz_bank import QuizBank
 from quiz_categories import QuizCategories
-import requests
 
 
 MAX_NUMBER_QUESTIONS = 20
@@ -38,26 +37,15 @@ def enter_number(max_questions: int) -> int:
         return user_input
 
 
-def max_questions_category(category_id: int) -> int:
-    url = "https://opentdb.com/api_count.php"
-    params = {"category": category_id}
-    response = requests.get(url, params)
-    max_questions_dict = response.json()
-    max_questions = max_questions_dict["category_question_count"][
-        "total_question_count"
-    ]
-    return min(MAX_NUMBER_QUESTIONS, max_questions)
-
-
 def main():
     my_quiz_category = QuizCategories()
     print(my_quiz_category)
     my_category = enter_category(my_quiz_category)
-    avalable_question_count = max_questions_category(my_category)
-    number_of_questions = enter_number(avalable_question_count)
-
+    avalable_question_count = my_quiz_category.max_questions_category(my_category)
+    number_of_questions = min(
+        enter_number(avalable_question_count), MAX_NUMBER_QUESTIONS
+    )
     my_quiz_bank = QuizBank(my_category, number_of_questions)
-
     quiz = QuizBrain(my_quiz_bank.questions)
 
     while quiz.still_has_questions():

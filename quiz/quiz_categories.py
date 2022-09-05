@@ -4,6 +4,7 @@ import requests
 
 class QuizCategories:
     url_categories = "https://opentdb.com/api_category.php"
+    url_max_questions = "https://opentdb.com/api_count.php"
 
     def __init__(self) -> None:
         self.categories = self._get_categories()
@@ -24,3 +25,12 @@ class QuizCategories:
             category_name = category_dict["name"]
             category_dict_temp[category_id] = category_name
         return category_dict_temp
+
+    def max_questions_category(self, category_id: int) -> int:
+        params = {"category": category_id}
+        response = requests.get(self.url_max_questions, params)
+        max_questions_dict = response.json()
+        max_questions = max_questions_dict["category_question_count"][
+            "total_question_count"
+        ]
+        return max_questions
