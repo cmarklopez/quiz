@@ -57,6 +57,7 @@ def enter_number(max_questions: int) -> int:
 
 
 def main():
+    """The entry point for the program. Orchestrates game flow."""
     my_quiz_category = QuizCategories()
     print(my_quiz_category)
     my_category = enter_category(my_quiz_category)
