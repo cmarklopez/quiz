@@ -22,8 +22,11 @@ def enter_category(quiz_category: QuizCategories) -> int:
 
 
 def enter_number(max_questions: int) -> int:
+    number_of_questions = min(max_questions, MAX_NUMBER_QUESTIONS)
     while True:
-        user_input = input(f"Choose a number of questions from 1 to {max_questions}.\n")
+        user_input = input(
+            f"Choose a number of questions from 1 to {number_of_questions}.\n"
+        )
         try:
             user_input = int(user_input)
             break
@@ -42,10 +45,10 @@ def main():
     print(my_quiz_category)
     my_category = enter_category(my_quiz_category)
     avalable_question_count = my_quiz_category.max_questions_category(my_category)
-    number_of_questions = min(
-        enter_number(avalable_question_count), MAX_NUMBER_QUESTIONS
-    )
+    number_of_questions = enter_number(avalable_question_count)
+
     my_quiz_bank = QuizBank(my_category, number_of_questions)
+
     quiz = QuizBrain(my_quiz_bank.questions)
 
     while quiz.still_has_questions():
