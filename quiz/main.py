@@ -6,14 +6,18 @@ from quiz_categories import QuizCategories
 MAX_NUMBER_QUESTIONS = 20
 
 
-def enter_category() -> int:
+def enter_category(quiz_category: QuizCategories) -> int:
     while True:
         user_input = input("Enter an ID from the list above.\n")
         try:
             user_input = int(user_input)
-            break
         except ValueError:
             continue
+        else:
+            if user_input in quiz_category.categories.keys():
+                break
+            else:
+                continue
     return user_input
 
 
@@ -36,7 +40,7 @@ def enter_number() -> int:
 def main():
     my_quiz_category = QuizCategories()
     my_quiz_category.list_categories()
-    my_category = enter_category()
+    my_category = enter_category(my_quiz_category)
     number_of_questions = enter_number()
 
     my_quiz_bank = QuizBank(my_category, number_of_questions)
