@@ -46,7 +46,7 @@ def max_questions_category(category_id: int) -> int:
     max_questions = max_questions_dict["category_question_count"][
         "total_question_count"
     ]
-    return max(MAX_NUMBER_QUESTIONS, max_questions)
+    return min(MAX_NUMBER_QUESTIONS, max_questions)
 
 
 def main():
@@ -54,7 +54,6 @@ def main():
     my_quiz_category.list_categories()
     my_category = enter_category(my_quiz_category)
     avalable_question_count = max_questions_category(my_category)
-    print(avalable_question_count)
     number_of_questions = enter_number(avalable_question_count)
 
     my_quiz_bank = QuizBank(my_category, number_of_questions)

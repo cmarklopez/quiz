@@ -9,7 +9,12 @@ class QuizBrain:
 
     def next_question(self):
         question = self.question_list[self.question_number]
-        answer = input(f"Q.{self.question_number}: {question.text}. (True/False)? ")
+        while True:
+            answer = input(f"Q.{self.question_number}: {question.text}. (True/False)? ")
+            if answer.lower() in ["true", "false"]:
+                break
+            else:
+                continue
         self.question_number += 1
         self.check_answer(answer, question.answer)
 
