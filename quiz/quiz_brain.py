@@ -14,12 +14,9 @@ class QuizBrain:
     def next_question(self):
         """Present the player with the next qustion."""
         question = self.question_list[self.question_number]
-        while True:
-            answer = input(f"Q.{self.question_number}: {question.text}. (True/False)? ")
-            if answer.lower() in ["true", "false"]:
-                break
-            else:
-                continue
+        prompt = f"Q.{self.question_number}: {question.text}. (True/False)? "
+        while (answer := input(prompt)).lower() not in ["true", "false"]:
+            pass
         self.question_number += 1
         self.check_answer(answer, question.answer)
 
