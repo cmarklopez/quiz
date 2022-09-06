@@ -21,12 +21,8 @@ def enter_category(quiz_category: QuizCategories) -> int:
             user_input = int(user_input)
         except ValueError:
             continue
-        else:
-            if user_input in quiz_category.categories.keys():
-                break
-            else:
-                continue
-    return user_input
+        if user_input in quiz_category.categories.keys():
+            return user_input
 
 
 def enter_number(max_questions: int) -> int:
@@ -45,15 +41,10 @@ def enter_number(max_questions: int) -> int:
         )
         try:
             user_input = int(user_input)
-            break
         except ValueError:
             continue
-    if user_input < 1:
-        return 1
-    elif user_input > MAX_NUMBER_QUESTIONS:
-        return MAX_NUMBER_QUESTIONS
-    else:
-        return user_input
+        if 1 <= user_input <= number_of_questions:
+            return user_input
 
 
 def main():
