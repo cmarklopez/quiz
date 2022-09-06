@@ -14,10 +14,9 @@ class QuizCategories:
         self.categories = self._get_categories()
 
     def __str__(self) -> str:
-        category_list = ""
-        for id, category in self.categories.items():
-            category_list += f"{id}: {category}\n"
-        return category_list
+        return "".join(
+            f"{id}: {category}\n" for id, category in self.categories.items()
+        )
 
     def _get_categories(self) -> dict[int, str]:
         """Get a list of all categories from the API"""
