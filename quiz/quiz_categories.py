@@ -18,38 +18,35 @@ class QuizCategories:
             f"{id}: {category}\n" for id, category in self.categories.items()
         )
 
-    def _get_categories(self) -> dict[int, str]:
+    def _get_categories(self) -> dict[int, str] | None:
         """Get a list of all categories from the API"""
-        category_dict_temp: dict[int, str] = {}
         try:
             response = requests.get(self.url_categories, timeout=30)
         except requests.ConnectionError as e:
             print("OOPS!! Connection Error. Make sure you are connected to Internet.\n")
-            print(str(e))
+            print(e)
         except requests.Timeout as e:
             print("OOPS!! Timeout Error")
-            print(str(e))
+            print(e)
         except requests.RequestException as e:
             print("OOPS!! General Error")
-            print(str(e))
+            print(e)
         except KeyboardInterrupt:
             print("Someone closed the program")
         else:
             results_to_json = response.json()
             category_list = html.unescape(results_to_json["trivia_categories"])
-            for category_dict in category_list:
-                category_id = category_dict["id"]
-                category_name = category_dict["name"]
-                category_dict_temp[category_id] = category_name
-        return category_dict_temp
+            return {
+                category_dict["id"]: category_dict["name"]
+                for category_dict in category_list
+            }
 
-    def max_questions_category(self, category_id: int) -> int:
+    def max_questions_category(self, category_id: int) -> int | None:
         """Get the total number of questions for the chosen category from the API
 
         :param category_id: int, The category chosen by the player for the game.
         """
         params = {"category": category_id}
-        max_questions = 0
         try:
             response = requests.get(self.url_max_questions, params)
         except requests.ConnectionError as e:
@@ -65,7 +62,4 @@ class QuizCategories:
             print("Someone closed the program")
         else:
             max_questions_dict = response.json()
-            max_questions = max_questions_dict["category_question_count"][
-                "total_question_count"
-            ]
-        return max_questions
+            return max_questions_dict["category_question_count"]["total_question_count"]
