@@ -39,10 +39,10 @@ class QuizBank:
         """Format the questions returned from the API. Strip the extra dictionary
         and fix the encoding.
         """
-        question_bank: list[Question] = []
-        for question_dict in questions_to_parse:
-            question_text = html.unescape(question_dict["question"])
-            question_answer = question_dict["correct_answer"]
-            question = Question(question_text, question_answer)
-            question_bank.append(question)
-        return question_bank
+        return [
+            Question(
+                text=html.unescape(question_dict["question"]),
+                answer=question_dict["correct_answer"],
+            )
+            for question_dict in questions_to_parse
+        ]
