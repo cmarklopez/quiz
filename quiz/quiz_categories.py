@@ -14,25 +14,23 @@ class QuizCategories:
         self.categories = self._get_categories()
 
     def __str__(self) -> str:
-        return "".join(
-            f"{id}: {category}\n" for id, category in self.categories.items()
-        )
+        if self.categories is not None:
+            return "".join(
+                f"{id}: {category}\n" for id, category in self.categories.items()
+            )
+        else:
+            return ""
 
-    def _get_categories(self) -> dict[int, str] | None:
+    def _get_categories(self) -> dict[int, str]:
         """Get a list of all categories from the API"""
         try:
             response = requests.get(self.url_categories, timeout=30)
-        except requests.ConnectionError as e:
-            print("OOPS!! Connection Error. Make sure you are connected to Internet.\n")
-            print(e)
-        except requests.Timeout as e:
-            print("OOPS!! Timeout Error")
-            print(e)
-        except requests.RequestException as e:
-            print("OOPS!! General Error")
-            print(e)
-        except KeyboardInterrupt:
-            print("Someone closed the program")
+        except requests.ConnectionError:
+            raise
+        except requests.Timeout:
+            raise
+        except requests.RequestException:
+            raise
         else:
             results_to_json = response.json()
             category_list = html.unescape(results_to_json["trivia_categories"])
@@ -41,7 +39,7 @@ class QuizCategories:
                 for category_dict in category_list
             }
 
-    def max_questions_category(self, category_id: int) -> int | None:
+    def max_questions_category(self, category_id: int) -> int:
         """Get the total number of questions for the chosen category from the API
 
         :param category_id: int, The category chosen by the player for the game.
@@ -49,17 +47,12 @@ class QuizCategories:
         params = {"category": category_id}
         try:
             response = requests.get(self.url_max_questions, params)
-        except requests.ConnectionError as e:
-            print("OOPS!! Connection Error. Make sure you are connected to Internet.\n")
-            print(str(e))
-        except requests.Timeout as e:
-            print("OOPS!! Timeout Error")
-            print(str(e))
-        except requests.RequestException as e:
-            print("OOPS!! General Error")
-            print(str(e))
-        except KeyboardInterrupt:
-            print("Someone closed the program")
+        except requests.ConnectionError:
+            raise
+        except requests.Timeout:
+            raise
+        except requests.RequestException:
+            raise
         else:
             max_questions_dict = response.json()
             return max_questions_dict["category_question_count"]["total_question_count"]

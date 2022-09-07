@@ -7,12 +7,12 @@ class QuizBank:
     """This class gets and stored the questions for a quiz from the Open Trivia DB"""
 
     url_questions = "https://opentdb.com/api.php"
+    question_type = "boolean"
 
     def __init__(self, category: int, number: int) -> None:
         self.question_category = category
         self.number_of_questions = number
         self.questions = self._get_questions()
-        self.question_type = "boolean"
 
     def _get_questions(self) -> list[Question]:
         """Get the questions from the Open Trivia DB and store them in questions
@@ -23,7 +23,15 @@ class QuizBank:
             "category": self.question_category,
             "type": self.question_type,
         }
-        response = requests.get(self.url_questions, params)
+        try:
+            response = requests.get(self.url_questions, params)
+        except requests.ConnectionError:
+            raise
+        except requests.Timeout:
+            raise
+        except requests.RequestException:
+            raise
+
         results_to_json = response.json()
         result_code = results_to_json["response_code"]
         if result_code == 0:
