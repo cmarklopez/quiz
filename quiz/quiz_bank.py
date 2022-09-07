@@ -39,7 +39,7 @@ class QuizBank:
             question_bank = self._process_questions(raw_questions)
             return question_bank
         else:
-            return []
+            raise ResultCodeError
 
     def _process_questions(
         self, questions_to_parse: list[dict[str, str]]
@@ -54,3 +54,7 @@ class QuizBank:
             )
             for question_dict in questions_to_parse
         ]
+
+
+class ResultCodeError(Exception):
+    pass
