@@ -1,9 +1,10 @@
 from quiz_brain import QuizBrain
 from quiz_bank import QuizBank
 from quiz_categories import QuizCategories
+import requests
 
 
-MAX_NUMBER_QUESTIONS = 20
+MAX_NUMBER_OF_QUESTIONS = 20
 
 
 def enter_category(quiz_category: QuizCategories) -> int:
@@ -34,7 +35,7 @@ def enter_number(max_questions: int) -> int:
 
     :return: The number of questions for the game as chosen by the player.
     """
-    number_of_questions = min(max_questions, MAX_NUMBER_QUESTIONS)
+    number_of_questions = min(max_questions, MAX_NUMBER_OF_QUESTIONS)
     while True:
         user_input = input(
             f"Choose a number of questions from 1 to {number_of_questions}.\n"
@@ -49,13 +50,28 @@ def enter_number(max_questions: int) -> int:
 
 def main():
     """The entry point for the program. Orchestrates game flow."""
-    my_quiz_category = QuizCategories()
+    try:
+        my_quiz_category = QuizCategories()
+    except requests.RequestException:
+        print("Unable to contact server. Please check your internet connection.")
+        return
+
     print(my_quiz_category)
     my_category = enter_category(my_quiz_category)
-    avalable_question_count = my_quiz_category.max_questions_category(my_category)
+
+    try:
+        avalable_question_count = my_quiz_category.max_questions_category(my_category)
+    except requests.RequestException:
+        print("Unable to contact server. Please check your internet connection.")
+        return
+
     number_of_questions = enter_number(avalable_question_count)
 
-    my_quiz_bank = QuizBank(my_category, number_of_questions)
+    try:
+        my_quiz_bank = QuizBank(my_category, number_of_questions)
+    except requests.RequestException:
+        print("Unable to contact server. Please check your internet connection.")
+        return
 
     quiz = QuizBrain(my_quiz_bank.questions)
 
