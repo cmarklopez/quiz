@@ -1,3 +1,4 @@
+from quiz.quiz_bank import ResultCodeError
 from quiz_brain import QuizBrain
 from quiz_bank import QuizBank
 from quiz_categories import QuizCategories
@@ -71,6 +72,11 @@ def main():
         my_quiz_bank = QuizBank(my_category, number_of_questions)
     except requests.RequestException:
         print("Unable to contact server. Please check your internet connection.")
+        return
+    except ResultCodeError:
+        print(
+            "The OpenTrivia API returned an error result_code while fetching questions."
+        )
         return
 
     quiz = QuizBrain(my_quiz_bank.questions)
