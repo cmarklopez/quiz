@@ -3,6 +3,7 @@ from quiz_brain import QuizBrain
 from quiz_bank import QuizBank
 from quiz_categories import QuizCategories
 import requests
+from ui import QuizInterface
 
 
 MAX_NUMBER_OF_QUESTIONS = 20
@@ -51,25 +52,25 @@ def enter_number(max_questions: int) -> int:
 
 def main():
     """The entry point for the program. Orchestrates game flow."""
+    # try:
+    #     my_quiz_category = QuizCategories()
+    # except requests.RequestException:
+    #     print("Unable to contact server. Please check your internet connection.")
+    #     return
+
+    # print(my_quiz_category)
+    # my_category = enter_category(my_quiz_category)
+
+    # try:
+    #     avalable_question_count = my_quiz_category.max_questions_category(my_category)
+    # except requests.RequestException:
+    #     print("Unable to contact server. Please check your internet connection.")
+    #     return
+
+    # number_of_questions = enter_number(avalable_question_count)
+
     try:
-        my_quiz_category = QuizCategories()
-    except requests.RequestException:
-        print("Unable to contact server. Please check your internet connection.")
-        return
-
-    print(my_quiz_category)
-    my_category = enter_category(my_quiz_category)
-
-    try:
-        avalable_question_count = my_quiz_category.max_questions_category(my_category)
-    except requests.RequestException:
-        print("Unable to contact server. Please check your internet connection.")
-        return
-
-    number_of_questions = enter_number(avalable_question_count)
-
-    try:
-        my_quiz_bank = QuizBank(my_category, number_of_questions)
+        my_quiz_bank = QuizBank()
     except requests.RequestException:
         print("Unable to contact server. Please check your internet connection.")
         return
@@ -81,8 +82,10 @@ def main():
 
     quiz = QuizBrain(my_quiz_bank.questions)
 
-    while quiz.still_has_questions():
-        quiz.next_question()
+    # while quiz.still_has_questions():
+    #   quiz.next_question()
+
+    quiz_ui = QuizInterface(quiz)
 
     print("You have completed the quiz.")
     print(f"your final score is {quiz.score}/{quiz.question_number}")

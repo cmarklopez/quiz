@@ -8,6 +8,7 @@ authors = ["Mark Lopez <cmarklopez@gmail.com>"]
 python = "^3.10"
 black = "^22.8.0"
 requests = "^2.28.1"
+tk = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

@@ -9,7 +9,7 @@ class QuizBank:
     url_questions = "https://opentdb.com/api.php"
     question_type = "boolean"
 
-    def __init__(self, category: int, number: int) -> None:
+    def __init__(self, category: int = -99, number: int = 10) -> None:
         self.question_category = category
         self.number_of_questions = number
         self.questions = self._get_questions()
@@ -18,11 +18,17 @@ class QuizBank:
         """Get the questions from the Open Trivia DB and store them in questions
         attribute
         """
-        params = {
-            "amount": self.number_of_questions,
-            "category": self.question_category,
-            "type": self.question_type,
-        }
+        if self.question_category == -99:
+            params = {
+                "amount": self.number_of_questions,
+                "type": self.question_type,
+            }
+        else:
+            params = {
+                "amount": self.number_of_questions,
+                "category": self.question_category,
+                "type": self.question_type,
+            }
         try:
             response = requests.get(self.url_questions, params)
         except requests.ConnectionError:
